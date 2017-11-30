@@ -1,0 +1,51 @@
+<div class="page">
+  <section class="card">
+    <div class="card-header">
+      Chat app
+    </div>
+
+    <div class="card-block">
+      <div class="media" *ngFor="let comment of comments | async">
+        <div class="media-left" *ngIf="comment.user.id !== currentUser.id">
+          <a href="#" class="icon-rounded">{{comment.initial}}</a>
+        </div>
+
+        <div class="media-body">
+          <h4 class="media-heading">
+            <span>{{comment.user.name}} Date: {{comment.date | date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <button class="btn btn-sm" (click)="toggleEditComment(comment)">編集</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteComment(comment)">削除</button>
+          </h4>
+
+          <div *ngIf="comment.key !== editingCommentKey">{{comment.content}}</div>
+
+          <ng-container *ngIf="comment.key === editingCommentKey">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="editingCommentContent">
+            </div>
+
+            <div class="edit-buttons">
+              <button class="btn btn-success btn-sm" (click)="saveEditingComment()">保存</button>
+              <button class="btn btn-sm" (click)="resetEditingComment()">リセット</button>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="media-right" *ngIf="comment.user.id === currentUser.id">
+          <a href="#" class="icon-rounded">{{comment.initial}}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-footer">
+    <form class="chat-form">
+      <div class="input-group">
+        <input type="text" class="form-control" [(ngModel)]="content" name="content" placeholder="コメント">
+        <span class="input-group-btn">
+          <button class="btn btn-info" type="button" (click)="addComment(content)">発言</button>
+        </span>
+      </div>
+    </form>
+  </section>
+</div>
